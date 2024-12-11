@@ -14,12 +14,12 @@ import config from '../config/config.js';
 import getSelectedFields from '../utils/selectFields.js';
 import { isValidObjectId } from 'mongoose';
 import Subject from '../models/subject.js';
-import Application from '../models/application.js';
 import { calculateAverageScoresSingleExpert, calculateSingleExpertScoresMultipleSubjects } from '../utils/updateScores.js';
 const tempResumeFolder = config.paths.resume.temporary;
 const expertResumeFolder = config.paths.resume.expert;
 
 import { fileURLToPath } from 'url';
+import Candidate from '../models/candidate.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -138,12 +138,12 @@ router.route('/')
                 const folderPath = path.join(__dirname, `../public/${expertResumeFolder}`);
                 try {
                     await fs.promises.access(folderPath);
-                    await fs.promises.rmdir(folderPath, { recursive: true }); // change this to async later
+                    await fs.promises.rmdir(folderPath, { recursive: true });
                 } catch (error) {
                     console.error(`Failed to remove directory: ${folderPath}`, error);
                 }
             })(),
-            Application.updateMany({}, { $set: { panel: [] } }),
+            Candidate.updateMany({}, { $set: { panel: [] } }),
             // Add if remember more
         ]);
 
@@ -280,26 +280,9 @@ router.route('/:id')
                 }
             })(),
             Subject.updateMany({ _id: { $in: expert.subjects } }, { $pull: { experts: { id: expert._id } } }),
-            Application.updateMany({ "panel.expert": expert._id }, { $pull: { panel: { expert: expert._id } } })
+            Candidate.updateMany({ "panel.expert": expert._id }, { $pull: { panel: { expert: expert._id } } })
         ]);
         return res.success(200, "Expert deleted successfully", { expert });
     }));
-
-router.post('/signin', safeHandler(async (req, res) => {
-    const { email, password } = expertLoginSchema.parse(req.body);
-    const expert = await Expert.findOne({ email });
-    if (!expert) {
-        throw new ApiError(404, "Invalid email or password", "INVALID_CREDENTIALS");
-    }
-
-    const validPassword = await bcrypt.compare(password, expert.password);
-    if (!validPassword) {
-        throw new ApiError(404, "Invalid email or password", "INVALID_CREDENTIALS");
-    }
-
-    const userToken = generateToken({ id: expert._id, role: "expert" });
-    res.cookie('userToken', userToken, { httpOnly: true });
-    return res.success(200, "Successfully logged in", { userToken, expert: { id: expert._id, email: expert.email, name: expert.name }, role: "expert" });
-}));
 
 export default router;

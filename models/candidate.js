@@ -87,17 +87,13 @@ const candidateSchema = new mongoose.Schema({
         unique: true,
         sparse: true
     },
-    subjects: [{
+    subject: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject'
-    }],
+    },
     feedbacks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Feedback'
-    }],
-    applications: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Application'
     }],
     image: {
         type: String,
@@ -110,10 +106,88 @@ const candidateSchema = new mongoose.Schema({
         unique: true,
         sparse: true
     },
-    averageRelevancyScore: {
+    relevancyScore: {
         type: Number,
         default: 0
+    },
+    panel: {
+        type: [
+            {
+                expert: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Expert',
+                    required: true
+                },
+                feedback: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Feedback',
+                    default: null
+                }
+            }
+        ],
+        default: []
+    },
+    status: {
+        type: String,
+        required: true,
+        enum: [ 
+            "scheduled",
+            "completed",
+            "pending",
+        ],
+        default: "pending"
+    },
+    appliedOn: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    interviewDetails: {
+        date: {
+            type: Date
+        },
+        time: {
+            type: String
+        },
+        platform: {
+            type: String,
+            enum: [
+                "zoom",
+                "googleMeet",
+                "microsofTeams",
+                "offline"
+            ]
+        },
+        link: {
+            type: String,
+            default: null
+        },
+        venue: {
+            type: String,
+            default: null
+        },
+        conducted: {
+            type: Boolean,
+            default: false
+        },
+        expertNotes: {
+            type: [
+                {
+                    expert: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'Expert',
+                        required: true
+                    },
+                    note: {
+                        type: String,
+                        default: ''
+                    }
+                }
+            ],
+            default: []
+        }
     }
+
     // status: {
     //     type: String,
     //     enum: ["active", "inactive"], 

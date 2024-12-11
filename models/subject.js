@@ -92,13 +92,6 @@ const subjectSchema = new mongoose.Schema({
         }],
         default: [],
     },
-    applications: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Application'
-        }],
-        default: []
-    },
     feedbacks: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,

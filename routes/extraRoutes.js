@@ -19,7 +19,7 @@ router.get('/parse', resumeUpload.single("resume"), safeHandler(async (req, res)
     const formData = new FormData();
     formData.append("file", fs.createReadStream(req.file.path));
     // try {
-    //     const response = await axios.post(`${process.env.RESUME_PARSER_URL}/resume/beta`, formData, {
+    //     const response = await axios.post(`${process.env.AI_API}/resume/beta`, formData, {
     //         headers: {
     //             ...formData.getHeaders(),
     //             "X-API-Key": process.env.RESUME_PARSER_API_KEY

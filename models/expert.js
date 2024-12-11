@@ -104,9 +104,9 @@ const expertSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Feedback'
     }],
-    applications: [{
+    candidates: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Application'
+        ref: 'Candidate'
     }],
     image: {
         type: String,

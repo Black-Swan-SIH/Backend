@@ -10,7 +10,6 @@ import candidateRoutes from './routes/candidateRoutes.js';
 import expertRoutes from './routes/expertRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import extraRoutes from './routes/extraRoutes.js';
-import applicationRoutes from './routes/applicationRoutes.js';
 const app = express();
 const __dirname = path.resolve();
 
@@ -42,7 +41,6 @@ app.use('/candidate', candidateRoutes);
 app.use('/expert', expertRoutes);
 app.use('/subject', subjectRoutes);
 app.use('/', extraRoutes);
-app.use('/application', applicationRoutes);
 
 
 //TEST OUT THIS ERROR JARGON FIRST
@@ -79,8 +77,6 @@ things pending:
 3. Seperate into controllers
 4. validate all object ids if coming
 5. Add more PATCH routes
-6. Add Subject opening date and last application date in model and schemas
-7. Add feedbacks for experts
 8. Add routes to remove experts and candidates from subjects
 9. Add routes to remove feedbacks
 10. Add enums for different drdo centres
@@ -92,12 +88,13 @@ things pending:
 16. Add a route to get all applications for a candidate
 17. Add a route to get all applications for an expert
 18. Do that encrypted pdf mail to expert thingy with password
-19. Add all experts to all subjects
 21. Remove all subjects from the queries while returning responses
 22. Candidate routes and application routes pending to be polluted by calculateAverageScores = also have to add calculcateAverageRelenvancyScores and calculateAverageFeedbackScore
 23. CDN and domain left to be setup
 24. Review pending applcation routes
 25. delete images when deleting candidate or expert
+
+Also update expert's score on candidate addition or removal
 
 /*
 Problem Statement Title:

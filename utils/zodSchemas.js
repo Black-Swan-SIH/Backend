@@ -252,7 +252,7 @@ export const candidateRegistrationSchema = z.object({
         .min(2, { message: 'Name must be at least 2 characters long.' })
         .max(50, { message: 'Name must not exceed 50 characters.' })
         .transform((name) => name.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')),
-        
+
     email: z
         .string({ required_error: 'Email is required.' })
         .email({ message: 'Please enter a valid email address.' })
@@ -335,13 +335,17 @@ export const candidateRegistrationSchema = z.object({
         .string({ required_error: 'Password is required.' })
         .min(6, { message: 'Password must be at least 6 characters long.' })
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:;<>,.?/~\-=\[\]])[A-Za-z\d!@#$%^&*()_+{}|:;<>,.?/~\-=\[\]]{6,}$/, { message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.' }),
-        
+
     confirmPassword: z
         .string({ required_error: 'Confirm password is required.' })
         .min(6, { message: 'Confirm password must be at least 6 characters long.' })
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:;<>,.?/~\-=\[\]])[A-Za-z\d!@#$%^&*()_+{}|:;<>,.?/~\-=\[\]]{6,}$/, { message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.' }),
-        
+
     resumeToken: z.string().optional(),
+
+    subject: z
+        .string({ required_error: 'Subject is required.' })
+        .regex(/^[0-9a-fA-F]{24}$/, { message: 'Subject must be a valid Mongoose ObjectId.' })
 }).refine(data => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     field: ['confirmPassword'],
