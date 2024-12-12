@@ -8,7 +8,8 @@ import e from "express";
 
 const router = express.Router();
 
-router.get("/giveme", safeHandler(async (req, res) => {
+router.route
+    .get("/giveme", safeHandler(async (req, res) => {
    const expertlist =req.body;
    if(!expertlist){
        throw new ApiError(400,"no experts found");

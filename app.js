@@ -10,7 +10,7 @@ import candidateRoutes from './routes/candidateRoutes.js';
 import expertRoutes from './routes/expertRoutes.js';
 import subjectRoutes from './routes/subjectRoutes.js';
 import extraRoutes from './routes/extraRoutes.js';
-import extraExperts from './models/extraExperts.js';
+import extraExperts from './routes/extraExpert.js';
 const app = express();
 const __dirname = path.resolve();
 
